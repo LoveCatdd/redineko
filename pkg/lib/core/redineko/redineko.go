@@ -6,6 +6,7 @@ import (
 
 	"github.com/LoveCatdd/util/pkg/lib/core/ids"
 	"github.com/LoveCatdd/util/pkg/lib/core/log"
+	"github.com/LoveCatdd/util/pkg/lib/core/viper"
 	"github.com/gomodule/redigo/redis"
 )
 
@@ -17,9 +18,11 @@ type RediNekoTranFunc func(conn redis.Conn) (err error)
 // 创建 Redis 连接池
 var pool *redis.Pool
 
-func init() {
-	conf := RediConf.Redis
+// Redis 连接配置
+func RediNekoConn() {
+	viper.Yaml(RediConf)
 
+	conf := RediConf.Redis
 	if !conf.Enable {
 		return
 	}
@@ -34,11 +37,11 @@ func init() {
 	}
 
 	if pool == nil {
-		log.Errorf("Redis pool failed to initialize at conf:%v", conf)
+		log.Errorf("Redis pool failed to initialize at conf:%+v", conf)
 		return
 	}
 
-	log.Infof("Redis pool success to initialize at conf:%v", conf)
+	log.Infof("Redis pool success to initialize at conf:%+v", conf)
 
 }
 
