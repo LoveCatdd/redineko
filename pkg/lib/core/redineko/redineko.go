@@ -146,3 +146,9 @@ func RediNekoTran(do ...RediNekoTranFunc) (err error) {
 	_, err = conn.Do("EXEC")
 	return
 }
+
+func RediNekoClose() {
+	if pool != nil {
+		pool.Close()
+	}
+}
